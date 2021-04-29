@@ -10,7 +10,7 @@ export default function EventPage({ events }) {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-	const resp = await fetch(`${API_URL}/api/events/${slug}`);
+	const resp = await fetch(`${API_URL}/events/?slug=${slug}`);
 	const events = await resp.json();
 
 	return {
@@ -19,7 +19,7 @@ export async function getStaticProps({ params: { slug } }) {
 }
 
 export async function getStaticPaths() {
-	const resp = await fetch(`${API_URL}/api/events`);
+	const resp = await fetch(`${API_URL}/events`);
 	const events = await resp.json();
 
 	const paths = events.map((ei) => ({
