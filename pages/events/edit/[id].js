@@ -10,6 +10,7 @@ import Modal from '../../../components/modal';
 import { API_URL } from '../../../config/index';
 import styles from '../../../styles/Form.module.css';
 import moment from 'moment';
+import ImageUpload from '../../../components/imageUpload';
 
 export default function EditEventPage({ evt }) {
 	const [values, setValues] = useState({
@@ -59,6 +60,13 @@ export default function EditEventPage({ evt }) {
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setValues({ ...values, [name]: value });
+	};
+
+	const imageUploaded = async (e) => {
+		const res = await fetch(`${API_URL}/events/${evt.id}`);
+		const data = await res.json();
+		setImagePreview(data.image.formats.thumbnail.url);
+		setShowModal(false);
 	};
 
 	return (
@@ -162,7 +170,7 @@ export default function EditEventPage({ evt }) {
 			</div>
 
 			<Modal show={showModal} onClose={() => setShowModal(false)}>
-				IMage upload
+				<ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
 			</Modal>
 		</Layout>
 	);
