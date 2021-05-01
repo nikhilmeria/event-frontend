@@ -176,13 +176,17 @@ export default function EditEventPage({ evt }) {
 	);
 }
 
-export async function getServerSideProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id }, req }) {
 	const resp = await fetch(`${API_URL}/events/${id}`);
 	const evt = await resp.json();
 
+	//console.log('edit getServerSideProps - evt : ', evt);
+	console.log('edit getServerSideProps - cookie : ', req.headers.cookie);
 	console.log('evt : ', evt);
 
 	return {
 		props: { evt },
 	};
 }
+
+// req.header.cookie  in the context object has  the cookie, which we had stored server side in the api/login page.

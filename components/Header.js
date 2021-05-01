@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useContext } from 'react';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaUserPlus } from 'react-icons/fa';
 import styles from '../styles/Header.module.css';
 import Search from './search';
 import AuthContext from '../context/authContext';
@@ -39,13 +39,22 @@ export default function Header() {
 							</li>
 						</>
 					) : (
-						<li>
-							<Link href="/auth/login">
-								<a className="btn-secondary btn-icon">
-									<FaSignInAlt /> Login
-								</a>
-							</Link>
-						</li>
+						<>
+							<li>
+								<Link href="/auth/login">
+									<a className="btn-secondary btn-icon">
+										<FaSignInAlt /> Login
+									</a>
+								</Link>
+							</li>
+							<li>
+								<Link href="/auth/register">
+									<a className="btn-secondary btn-icon">
+										<FaUserPlus /> Register
+									</a>
+								</Link>
+							</li>
+						</>
 					)}
 				</ul>
 			</nav>

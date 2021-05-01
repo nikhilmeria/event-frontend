@@ -14,6 +14,10 @@ export default function RegisterPage() {
 	const [password, setPassword] = useState('');
 	const [passwordConfirm, setPasswordConfirm] = useState('');
 
+	useEffect(() => {
+		error && toast.error(error);
+	}, [error]);
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
