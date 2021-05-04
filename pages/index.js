@@ -17,10 +17,10 @@ export default function HomePage({ events }) {
 }
 
 export async function getStaticProps() {
-	const resp = await fetch(`${API_URL}/events?_sort=date:ASC&_limit=3`);
+	const resp = await fetch(`${API_URL}/events?_sort=date:ASC&_limit=10`);
 	const events = await resp.json();
 
-	//	console.log('getStaticProps: ', events);
+	//	console.log('home -getStaticProps: ', events);
 
 	return {
 		props: { events },

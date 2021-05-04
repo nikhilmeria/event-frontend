@@ -11,8 +11,9 @@ import { API_URL } from '../../../config/index';
 import styles from '../../../styles/Form.module.css';
 import moment from 'moment';
 import ImageUpload from '../../../components/imageUpload';
+import { parseCookies } from '../../../utility';
 
-export default function EditEventPage({ evt }) {
+export default function EditEventPage({ evt, token }) {
 	const [values, setValues] = useState({
 		name: evt.name,
 		performers: evt.performers,
@@ -31,6 +32,7 @@ export default function EditEventPage({ evt }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		console.log('edit - handleSubmit : ', evt);
 
 		// Validation
 		const hasEmptyFields = Object.values(values).some(
@@ -44,6 +46,7 @@ export default function EditEventPage({ evt }) {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(values),
 			});
@@ -170,22 +173,23 @@ export default function EditEventPage({ evt }) {
 			</div>
 
 			<Modal show={showModal} onClose={() => setShowModal(false)}>
-				<ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
+				<ImageUpload evtId={evt.id} imageUploaded={imageUploaded} token={token} />
 			</Modal>
 		</Layout>
 	);
 }
 
 export async function getServerSideProps({ params: { id }, req }) {
+	const { token } = parseCookies(req);
 	const resp = await fetch(`${API_URL}/events/${id}`);
 	const evt = await resp.json();
 
 	//console.log('edit getServerSideProps - evt : ', evt);
-	console.log('edit getServerSideProps - cookie : ', req.headers.cookie);
+	console.log('edit getServerSideProps - cookie : ', token);
 	console.log('evt : ', evt);
 
 	return {
-		props: { evt },
+		props: { evt, token },
 	};
 }
 

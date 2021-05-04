@@ -7,6 +7,7 @@ import AuthContext from '../context/authContext';
 
 export default function Header() {
 	const { user, logout } = useContext(AuthContext);
+	//console.log('user email - header : ', user);
 
 	return (
 		<header className={styles.header}>
@@ -20,13 +21,13 @@ export default function Header() {
 
 			<nav>
 				<ul>
-					<li>
-						<Link href="/events">
-							<a>Events</a>
-						</Link>
-					</li>
 					{user ? (
 						<>
+							<li>
+								<Link href="/events">
+									<a>My Events</a>
+								</Link>
+							</li>
 							<li>
 								<Link href="/events/add">
 									<a>Add Event</a>

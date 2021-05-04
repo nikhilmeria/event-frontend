@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	// Check if user is logged in (persist user session in app)
-	const checkUserLoggedIn = async (user) => {
+	const checkUserLoggedIn = async () => {
 		const resp = await fetch(`${NEXT_URL}/api/user`);
 		const usr = await resp.json();
 
@@ -85,7 +85,9 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, error, register, login, logout }}>
+		<AuthContext.Provider
+			value={{ user, error, register, login, logout, checkUserLoggedIn }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

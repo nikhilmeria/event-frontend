@@ -1,3 +1,4 @@
+import { useContext, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -5,11 +6,23 @@ import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { API_URL } from '../../config/index';
+import { API_URL, NEXT_URL } from '../../config/index';
 import styles from '../../styles/Event.module.css';
+import AuthContext from '../../context/authContext';
 
 export default function EventPage({ evt }) {
 	const router = useRouter();
+	const { checkUserLoggedIn, user } = useContext(AuthContext);
+	//console.log('email 1 - slug : ', evt.user.email);
+	//console.log('email 2 - slug : ', user.email);
+
+	useEffect(() => {
+		usrData();
+	}, []);
+
+	const usrData = async () => {
+		await checkUserLoggedIn();
+	};
 
 	const deleteEvent = async (e) => {
 		if (confirm('Are you sure?')) {
@@ -30,16 +43,18 @@ export default function EventPage({ evt }) {
 	return (
 		<Layout>
 			<div className={styles.event}>
-				<div className={styles.controls}>
-					<Link href={`/events/edit/${evt.id}`}>
-						<a>
-							<FaPencilAlt /> Edit Event
+				{user !== null && user.email === evt.user.email && (
+					<div className={styles.controls}>
+						<Link href={`/events/edit/${evt.id}`}>
+							<a>
+								<FaPencilAlt /> Edit Event
+							</a>
+						</Link>
+						<a href="#" className={styles.delete} onClick={deleteEvent}>
+							<FaTimes /> Delete Event
 						</a>
-					</Link>
-					<a href="#" className={styles.delete} onClick={deleteEvent}>
-						<FaTimes /> Delete Event
-					</a>
-				</div>
+					</div>
+				)}
 
 				<span>
 					{new Date(evt.date).toLocaleDateString('en-US')} at {evt.time}
@@ -71,7 +86,7 @@ export async function getStaticProps({ params: { slug } }) {
 	const resp = await fetch(`${API_URL}/events/?slug=${slug}`);
 	const events = await resp.json();
 
-	console.log('evtPage : ', events[0].image);
+	//	console.log('evtPage : ', events);
 	return {
 		props: { evt: events[0] },
 	};
