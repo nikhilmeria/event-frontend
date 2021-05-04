@@ -82,30 +82,40 @@ export default function EventPage({ evt }) {
 	);
 }
 
-export async function getStaticProps({ params: { slug } }) {
+export async function getServerSideProps({ query: { slug } }) {
 	const resp = await fetch(`${API_URL}/events/?slug=${slug}`);
 	const events = await resp.json();
 
-	//	console.log('evtPage : ', events);
+	console.log('evtPage : ', events);
 	return {
 		props: { evt: events[0] },
 	};
 }
 
-export async function getStaticPaths() {
-	const resp = await fetch(`${API_URL}/events`);
-	const events = await resp.json();
+// export async function getStaticProps({ params: { slug } }) {
+// 	const resp = await fetch(`${API_URL}/events/?slug=${slug}`);
+// 	const events = await resp.json();
 
-	const paths = events.map((ei) => ({
-		params: {
-			slug: ei.slug,
-		},
-	}));
+// 	//	console.log('evtPage : ', events);
+// 	return {
+// 		props: { evt: events[0] },
+// 	};
+// }
 
-	//console.log('paths : ', paths);
+// export async function getStaticPaths() {
+// 	const resp = await fetch(`${API_URL}/events`);
+// 	const events = await resp.json();
 
-	return {
-		paths: paths,
-		fallback: false,
-	};
-}
+// 	const paths = events.map((ei) => ({
+// 		params: {
+// 			slug: ei.slug,
+// 		},
+// 	}));
+
+// 	//console.log('paths : ', paths);
+
+// 	return {
+// 		paths: paths,
+// 		fallback: false,
+// 	};
+// }
